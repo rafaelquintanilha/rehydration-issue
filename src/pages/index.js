@@ -1,8 +1,9 @@
 import React from "react";
+import css from './index.module.css';
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import useIsClient from '../useIsClient';
-import css from './index.module.css';
+import useLocalStorage from "../useLocalStorage";
 
 const ComponentWithEarlyExit = () => {
   const { isClient, key } = useIsClient();
@@ -24,18 +25,17 @@ const ComponentWithKey = () => {
 }
 
 const ComponentWithoutKey = () => {
-  const { isClient } = useIsClient();
+  const [token, setToken] = useLocalStorage('token', "");
+  const isLoggedIn = token !== "";
+
+  const onLogin = () => setToken(Math.random().toString(36).substring(2));
+  const onLogout = () => setToken("");
+
   return (
     <div>
-      {isClient ? (
-        <div className={css['red']}>
-          I am in the client}
-        </div>    
-      ) : (
-        <div className={css['blue']}>
-          I am in the server
-        </div>    
-      )}
+      {isLoggedIn 
+        ? <button className={css['red']} onClick={onLogout}>Logout</button>
+        : <button className={css['blue']} onClick={onLogin}>Login</button>}
     </div>
   );
 }
