@@ -5,16 +5,10 @@ import SEO from "../components/seo";
 import useIsClient from '../useIsClient';
 import useLocalStorage from "../useLocalStorage";
 
-const ComponentWithEarlyExit = () => {
-  const [token, setToken] = useLocalStorage('token', "");
-  const isLoggedIn = token !== "";
+const ComponentWithEarlyExit = ({isLoggedIn, onLogin, onLogout}) => {
   const { isClient, key } = useIsClient();
 
-  const onLogin = () => setToken(Math.random().toString(36).substring(2));
-  const onLogout = () => setToken("");
-
   if ( !isClient ) return null;
-
   return (
     <div key={key}>
       {isLoggedIn 
@@ -24,14 +18,8 @@ const ComponentWithEarlyExit = () => {
   );
 }
 
-const ComponentWithKey = () => {
-  const [token, setToken] = useLocalStorage('token', "");
-  const isLoggedIn = token !== "";
+const ComponentWithKey = ({isLoggedIn, onLogin, onLogout}) => {
   const { key } = useIsClient();
-
-  const onLogin = () => setToken(Math.random().toString(36).substring(2));
-  const onLogout = () => setToken("");
-
   return (
     <div key={key}>
       {isLoggedIn 
@@ -41,13 +29,7 @@ const ComponentWithKey = () => {
   );
 }
 
-const ComponentWithoutKey = () => {
-  const [token, setToken] = useLocalStorage('token', "");
-  const isLoggedIn = token !== "";
-
-  const onLogin = () => setToken(Math.random().toString(36).substring(2));
-  const onLogout = () => setToken("");
-
+const ComponentWithoutKey = ({isLoggedIn, onLogin, onLogout}) => {
   return (
     <div>
       {isLoggedIn 
@@ -58,12 +40,19 @@ const ComponentWithoutKey = () => {
 }
 
 const IndexPage = () => {
+  const [token, setToken] = useLocalStorage('token', "");
+
+  // Manipulate token
+  const isLoggedIn = token !== "";
+  const onLogin = () => setToken(Math.random().toString(36).substring(2));
+  const onLogout = () => setToken("");
+
   return (
     <Layout>
       <SEO title="Home" />
-      <ComponentWithoutKey />
-      <ComponentWithKey />
-      <ComponentWithEarlyExit />
+      <ComponentWithoutKey isLoggedIn={isLoggedIn} onLogin={onLogin} onLogout={onLogout} />
+      <ComponentWithKey isLoggedIn={isLoggedIn} onLogin={onLogin} onLogout={onLogout} />
+      <ComponentWithEarlyExit isLoggedIn={isLoggedIn} onLogin={onLogin} onLogout={onLogout} />
     </Layout>
   );
 }
