@@ -26,8 +26,16 @@ const ComponentWithKey = () => {
 const ComponentWithoutKey = () => {
   const { isClient } = useIsClient();
   return (
-    <div className={isClient ? css['red'] : css['blue']}>
-      I am in the {isClient ? "client" : "server"}
+    <div>
+      {isClient ? (
+        <div className={css['red']}>
+          I am in the client}
+        </div>    
+      ) : (
+        <div className={css['blue']}>
+          I am in the server
+        </div>    
+      )}
     </div>
   );
 }
