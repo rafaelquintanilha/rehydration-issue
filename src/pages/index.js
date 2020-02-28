@@ -6,20 +6,37 @@ import useIsClient from '../useIsClient';
 import useLocalStorage from "../useLocalStorage";
 
 const ComponentWithEarlyExit = () => {
+  const [token, setToken] = useLocalStorage('token', "");
+  const isLoggedIn = token !== "";
   const { isClient, key } = useIsClient();
+
+  const onLogin = () => setToken(Math.random().toString(36).substring(2));
+  const onLogout = () => setToken("");
+
   if ( !isClient ) return null;
+
   return (
-    <div key={key} className={isClient ? css['red'] : css['blue']}>
-      I am in the {isClient ? "client" : "server"}
+    <div key={key}>
+      {isLoggedIn 
+        ? <button className={css['red']} onClick={onLogout}>Logout</button>
+        : <button className={css['blue']} onClick={onLogin}>Login</button>}
     </div>
   );
 }
 
 const ComponentWithKey = () => {
-  const { isClient, key } = useIsClient();
+  const [token, setToken] = useLocalStorage('token', "");
+  const isLoggedIn = token !== "";
+  const { key } = useIsClient();
+
+  const onLogin = () => setToken(Math.random().toString(36).substring(2));
+  const onLogout = () => setToken("");
+
   return (
-    <div key={key} className={isClient ? css['red'] : css['blue']}>
-      I am in the {isClient ? "client" : "server"}
+    <div key={key}>
+      {isLoggedIn 
+        ? <button className={css['red']} onClick={onLogout}>Logout</button>
+        : <button className={css['blue']} onClick={onLogin}>Login</button>}
     </div>
   );
 }
