@@ -34,10 +34,12 @@ const Layout = ({ children }) => {
         }}
       >
         <main>{children}</main>
-        <footer>
+        <footer style={{marginTop: "30px"}}>
           © {new Date().getFullYear()}, Built with
           {` `}
           <a href="https://www.gatsbyjs.org">Gatsby</a>
+          {` `}
+          by <a href="https://rafaelquintanilha.com">Rafael Quintanilha</a>
         </footer>
       </div>
     </>

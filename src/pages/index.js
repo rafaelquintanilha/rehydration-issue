@@ -50,8 +50,25 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO title="Home" />
+      <pre>
+        The first button has a hydration issue. Notice that if you are logged in, 
+        <br />
+        the logout color should be blue, which doesn't happen when you first load the page.
+      </pre>
       <ComponentWithoutKey isLoggedIn={isLoggedIn} onLogin={onLogin} onLogout={onLogout} />
+      <br />
+      <pre>
+        The second button fixes the above issue. However, notice that there is a 
+        <br />
+        flicker in the color, which is the time it takes for the JS to be parsed.
+      </pre>
       <ComponentWithKey isLoggedIn={isLoggedIn} onLogin={onLogin} onLogout={onLogout} />
+      <br />
+      <pre>
+        The third button only appears when the JS is already parsed. This avoids 
+        <br />
+        the flicker at the expense of delaying the completeness of the UI.
+      </pre>
       <ComponentWithEarlyExit isLoggedIn={isLoggedIn} onLogin={onLogin} onLogout={onLogout} />
     </Layout>
   );
